@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.kfDetail.mapper.TKfDetailMapper">
+    
+    <resultMap type="TKfDetail" id="TKfDetailResult">
+        <result property="id"    column="id"    />
+        <result property="confId"    column="confId"    />
+        <result property="qq"    column="qq"    />
+        <result property="wechat"    column="wechat"    />
+        <result property="aliPay"    column="aliPay"    />
+        <result property="name"    column="name"    />
+        <result property="url"    column="url"    />
+    </resultMap>
+	
+	<sql id="selectTKfDetailVo">
+        select id, confId, qq, wechat,`name`,url, aliPay from t_kf_detail
+    </sql>
+	
+    <select id="selectTKfDetailList" parameterType="com.ruoyi.project.system.kfDetail.domain.TKfDetail" resultMap="TKfDetailResult">
+        <include refid="selectTKfDetailVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="confId != null "> and confId = #{confId}</if>
+             <if test="qq != null  and qq != '' "> and qq = #{qq}</if>
+             <if test="wechat != null  and wechat != '' "> and wechat = #{wechat}</if>
+             <if test="aliPay != null  and aliPay != '' "> and aliPay = #{aliPay}</if>
+            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="url != null  and url != '' "> and url = #{name}</if>
+         </where>
+    </select>
+    
+    <select id="selectTKfDetailById" parameterType="Long" resultMap="TKfDetailResult">
+        <include refid="selectTKfDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTKfDetail" parameterType="com.ruoyi.project.system.kfDetail.domain.TKfDetail">
+        insert into t_kf_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="confId != null  ">confId,</if>
+			<if test="qq != null  and qq != ''  ">qq,</if>
+			<if test="wechat != null  and wechat != ''  ">wechat,</if>
+			<if test="aliPay != null  and aliPay != ''  ">aliPay,</if>
+            <if test="name != null  and name != ''  ">`name`,</if>
+            <if test="url != null  and url != ''  ">`url`,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="confId != null  ">#{confId},</if>
+			<if test="qq != null  and qq != ''  ">#{qq},</if>
+			<if test="wechat != null  and wechat != ''  ">#{wechat},</if>
+			<if test="aliPay != null  and aliPay != ''  ">#{aliPay},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="url != null  and url != ''  ">#{url},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTKfDetail" parameterType="com.ruoyi.project.system.kfDetail.domain.TKfDetail">
+        update t_kf_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="confId != null  ">confId = #{confId},</if>
+            <if test="qq != null  and qq != ''  ">qq = #{qq},</if>
+            <if test="wechat != null  and wechat != ''  ">wechat = #{wechat},</if>
+            <if test="aliPay != null  and aliPay != ''  ">aliPay = #{aliPay},</if>
+            <if test="name != null  and name != ''  ">aliPay = #{name},</if>
+            <if test="url != null  and url != ''  ">url = #{url},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTKfDetailById" parameterType="Long">
+        delete from t_kf_detail where id = #{id}
+    </delete>
+	
+    <delete id="deleteTKfDetailByIds" parameterType="String">
+        delete from t_kf_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

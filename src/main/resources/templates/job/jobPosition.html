@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('公司职位信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+
+							<input type="hidden" id="companyId" name="companyId" th:value="${company.companyId}">
+
+							<li>
+								职位标题：<input type="text" name="title"/>
+							</li>
+
+							<li>
+								职位分类：
+								<select name="category" th:with="type=${@dict.getType('job_category')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="addNewJob()" >
+					<i class="fa fa-plus"></i> 新增招聘职位
+				</a>
+
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('job:jobPosition:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('job:jobPosition:remove')}]];
+        var prefix = ctx + "job/jobPosition";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "公司职位信息列表",
+		        showExport: true,
+                columns: [
+				{
+					field : 'id', 
+					title : '主键',
+					visible: false
+				},
+				/*{
+					field : 'companyId',
+					title : '公司ID',
+				},
+				{
+					field : 'kfId',
+					title : '客服ID',
+				},*/
+				{
+					field : 'title', 
+					title : '职位标题',
+				},
+				{
+					field : 'type', 
+					title : '类型',
+				},
+				{
+					field : 'cleanType', 
+					title : '结算方式',
+				},
+				{
+					field : 'needPeople', 
+					title : '招聘人数',
+				},
+				{
+					field : 'hasPeople', 
+					title : '已录取人数',
+				},
+				{
+					field : 'reportPeople', 
+					title : '报名人数',
+				},
+				{
+					field : 'money', 
+					title : '薪资',
+				},
+				{
+					field : 'jobRequired', 
+					title : '工作要求',
+				},
+				{
+					field : 'jobTitle',
+					title : '职位Title',
+				},
+				{
+					field : 'workflow', 
+					title : '工作流程',
+				},
+				/*{
+					field : 'jobDetail', 
+					title : '职位详情',
+				},*/
+				{
+					field : 'address', 
+					title : '工作详细地点',
+				},
+				/*{
+					field : 'location',
+					title : '位置',
+				},*/
+                {
+                    field : 'locationName',
+                    title : '位置',
+                },
+
+				/*{
+					field : 'lable',
+					title : '职位标签',
+				},*/
+                {
+                    field : 'lableName',
+                    title : '职位标签',
+                },
+
+				/*{
+					field : 'category',
+					title : '职位分类',
+					sortable: true
+				},*/
+                {
+                    field : 'jobCategory',
+                    title : '职位分类',
+                },
+				{
+					field : 'publishTime', 
+					title : '发布时间',
+				},
+			/*	{
+					field : 'isHot',
+					title : '是否热门推荐',
+                    formatter: function (value, row, index) {
+                        if (row.isHot==0) {
+                           return '<a  href="javascript:void(0)" onclick="setHot(\'' + row.id + '\')" <button class="btn btn-outline btn-primary">设置热门</button></a> ';
+                        } else {
+                            return '<a  href="javascript:void(0)" onclick="cancelHot(\'' + row.id + '\')" <button class="btn btn-outline btn-danger">取消热门</button></a> ';
+                        }
+                    }
+				},*/
+
+				/*{
+					field : 'createTime', 
+					title : '创建时间',
+				},
+				{
+					field : 'updateTime', 
+					title : '修改时间',
+					sortable: true
+				},*/
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="authKF(\'' + row.id + '\')"><i class="fa"></i>分配客服</a> ');
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+
+
+	 <script>
+         /* 新增招聘职位 */
+         function addNewJob() {
+             var url = window.location.protocol + '//' + window.location.host  + '/job/jobPosition/addNewJob/' + $("#companyId").val();
+             $.modal.open("新增招聘职位", url);
+         }
+
+         /* 添加客服 */
+         function authKF(id) {
+             var url = prefix + '/authKF/' + id;
+             $.modal.open("添加客服", url, '800', '300');
+         }
+
+         /* 设置热门 */
+         function setHot(id) {
+             $.modal.confirm("确认设置为热门码？", function() {
+                 $.operate.post(prefix + "/edit", { "id": id, "isHot": 1 });
+             })
+         }
+
+         /* 取消热门设置 */
+         function cancelHot(id) {
+             $.modal.confirm("确认取消热门设置吗？", function() {
+                 $.operate.post(prefix + "/edit", { "id": id, "isHot": 0 });
+             })
+         }
+
+	 </script>
+
+
+
+</body>
+</html>

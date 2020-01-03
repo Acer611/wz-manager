@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('分配客服')" />
+	<th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: bootstrap-select-css" />
+	<th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-jobPosition-authKF">
+			<input name="id"  type="hidden"  th:value="${jobInfo.id}" />
+
+			<div class="form-group">
+				<input class="col-sm-3" type="button" value="客服列表:" onclick="getKFList()">
+				<div class="col-sm-8">
+					<select id="kfId" name ="kfId" class="form-control select2-hidden-accessible valid"></select>
+				</div>
+			</div>
+
+		</form>
+	</div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: datetimepicker-js" />
+	<th:block th:include="include :: select2-js" />
+	<th:block th:include="include :: bootstrap-select-js" />
+	<script type="text/javascript">
+        var prefix = ctx + "job/jobPosition";
+		$("#form-jobPosition-authKF").validate({
+			rules:{
+
+			},
+			focusCleanup: true
+		});
+		
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-jobPosition-authKF').serialize());
+            }
+        }
+	</script>
+
+
+	<!--获取客服信息列表-->
+	<script>
+        function getKFList(){
+            $("select[name='kfId']").empty();
+            $.ajax({
+                type : "POST",
+                url :  window.location.protocol + '//' + window.location.host   + "/job/jobPosition/getKFList",
+                dataType : "JSON",
+                data : {},
+                success : function(msg) {
+                    //debugger;
+                    $("select[name='kfId']").prepend("<option value=''>--请选择客服--</option>");//添加第一个option值
+                    for (var i = 0; i < msg.length; i++) {
+                        //如果在select中传递其他参数，可以在option 的value属性中添加参数
+                        $("select[name='kfId']").append("<option value='"+msg[i].id+"'>"+msg[i].name+"</option>");
+                    }
+
+                },error:function(){
+                    alert("获取数据失败","error");
+                }
+            });
+        }
+/*
+        $(document).on("change","#type",function(){
+            var value = obj.options[obj.selectedIndex].value
+            var textValue = obj.options[obj.selectedIndex].text
+            $(".taskType").find("option[text= textValue]").attr("selected",true);
+        });
+*/
+
+	</script>
+</body>
+
+</html>

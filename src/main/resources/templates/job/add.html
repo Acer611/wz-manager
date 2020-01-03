@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增招聘职位信息')" />
+	<th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: bootstrap-select-css" />
+	<th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-jobPosition-add">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">公司ID：</label>
+				<div class="col-sm-8">
+					<input id="companyId" name="companyId" class="form-control" th:value="${companyId}"type="text" readonly>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">客服ID：</label>
+				<div class="col-sm-8">
+					<input id="kfId" name="kfId" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">职位标题：</label>
+				<div class="col-sm-8">
+					<input id="title" name="title" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">类型(短期、长期)：</label>
+				<div class="col-sm-8">
+					<input id="type" name="type" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">结算方式(日结、月结)：</label>
+				<div class="col-sm-8">
+					<input id="cleanType" name="cleanType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">招聘人数：</label>
+				<div class="col-sm-8">
+					<input id="needPeople" name="needPeople" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">已录取人数：</label>
+				<div class="col-sm-8">
+					<input id="hasPeople" name="hasPeople" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">报名人数：</label>
+				<div class="col-sm-8">
+					<input id="reportPeople" name="reportPeople" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">薪资：</label>
+				<div class="col-sm-8">
+					<input id="money" name="money" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工作要求（兼职  性别）：</label>
+				<div class="col-sm-8">
+					<input id="jobRequired" name="jobRequired" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<input class="col-sm-3" type="button" value="任务类型(职位title):" onclick="getJobTitleList()">
+				<div class="col-sm-8">
+					<select id="taskType" name ="taskType" class="form-control select2-hidden-accessible valid"></select>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<input class="col-sm-3" type="button" value="职位所在地:" onclick="getCityList()">
+
+				<div class="col-sm-8">
+					<select  id ="location" name ="location" class="form-control select2-hidden-accessible valid"  ></select>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">工作详细地点：</label>
+				<div class="col-sm-8">
+					<input id="address" name="address" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<input class="col-sm-3" type="button" value="职位标签:" onclick="getJobLable()">
+				<div class="col-sm-8">
+					<select  id="lable" name ="lable" class="form-control select2-hidden-accessible valid" data-select2-id="1" tabindex="-1" aria-hidden="true" aria-invalid="false" ></select>
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<!--<label class="col-sm-3 control-label">职位分类  （1 简单  2 躺赚 3 轻松   4 极速 关联 config_job_category 的ID）：</label>-->
+				<input class="col-sm-3" type="button" value="职位分类:" onclick="getJobCategory()">
+				<div class="col-sm-8">
+					<!--<input id="category" name="category" class="form-control" type="text">-->
+					<select  id="category" name ="category" class="form-control select2-hidden-accessible valid"  ></select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">工作流程：</label>
+				<div class="col-sm-8">
+					<!--<textarea id="businessScop" name="businessScop" th:field="*{businessScop}" class="form-control" maxlength="2000" rows="4"> </textarea>-->
+					<textarea id="workflow" name="workflow" class="form-control"  maxlength="1000" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">职位详情：</label>
+				<div class="col-sm-8">
+					<textarea id="jobDetail" name="jobDetail" class="form-control"  maxlength="1000" rows="3"></textarea>
+					<!--<input id="jobDetail" name="jobDetail" class="form-control" type="text">-->
+				</div>
+			</div>
+
+			<!--	<div class="form-group">
+                    <label class="col-sm-3 control-label">发布时间：</label>
+                    <div class="col-sm-8">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form-control" name = "publishTime" id="laydate-demo-3" placeholder="yyyy-MM-dd HH:mm">
+                        </div>
+                    </div>
+                </div>-->
+
+
+		</form>
+
+
+	</div>
+    <div th:include="include::footer"></div>
+	<th:block th:include="include :: datetimepicker-js" />
+	<th:block th:include="include :: select2-js" />
+	<th:block th:include="include :: bootstrap-select-js" />
+    <script type="text/javascript">
+		var prefix =  window.location.protocol + '//' + window.location.host   + "/job/jobPosition"
+		$("#form-jobPosition-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-jobPosition-add').serialize());
+	        }
+	    }
+	</script>
+
+
+<!--获取任务类型（职位Title）-->
+<script>
+    function getJobTitleList(){
+        $("select[name='taskType']").empty();
+        $.ajax({
+            type : "POST",
+            url :  window.location.protocol + '//' + window.location.host   + "/job/jobPosition/getJobTitleList",
+            dataType : "JSON",
+            data : {},
+            success : function(msg) {
+                //debugger;
+                $("select[name='taskType']").prepend("<option value=''>--请选择职位Title--</option>");//添加第一个option值
+                for (var i = 0; i < msg.length; i++) {
+                    //如果在select中传递其他参数，可以在option 的value属性中添加参数
+                    $("select[name='taskType']").append("<option value='"+msg[i].id+"'>"+msg[i].name+"</option>");
+                }
+
+            },error:function(){
+                alert("获取数据失败","error");
+            }
+        });
+    }
+    $(document).on("change","#type",function(){
+        var value = obj.options[obj.selectedIndex].value
+        var textValue = obj.options[obj.selectedIndex].text
+        $(".taskType").find("option[text= textValue]").attr("selected",true);
+    });
+
+</script>
+
+
+<!--获取城市信息-->
+<script>
+	function getCityList(){
+        $("select[name='location']").empty();
+		$.ajax({
+			type : "POST",
+			url :  window.location.protocol + '//' + window.location.host   + "/job/jobPosition/getCityList",
+			dataType : "JSON",
+			data : {},
+			success : function(msg) {
+				//debugger;
+                $("select[name='location']").prepend("<option value=''>--请选择城市--</option>");//添加第一个option值
+				for (var i = 0; i < msg.length; i++) {
+					//如果在select中传递其他参数，可以在option 的value属性中添加参数
+                    $("select[name='location']").append("<option value='"+msg[i].id+"'>"+msg[i].name+"</option>");
+				}
+
+			},error:function(){
+				alert("获取数据失败","error");
+			}
+		});
+	}
+	$(document).on("change","#type",function(){
+		var value = obj.options[obj.selectedIndex].value
+		var textValue = obj.options[obj.selectedIndex].text
+		$(".location").find("option[text= textValue]").attr("selected",true);
+	});
+
+</script>
+
+
+<!--获取职位标签信息-->
+<script>
+	function getJobLable(){
+		$("select[name='lable']").empty();
+		$.ajax({
+			type : "POST",
+			url :  window.location.protocol + '//' + window.location.host   + "/job/jobPosition/getJobLabelList",
+			dataType : "JSON",
+			data : {},
+			success : function(msg) {
+				//debugger;
+				$("select[name='lable']").prepend("<option value=''>--请选择职位标签--</option>");//添加第一个option值
+				for (var i = 0; i < msg.length; i++) {
+					//如果在select中传递其他参数，可以在option 的value属性中添加参数
+					$("select[name='lable']").append("<option value='"+msg[i].id+"'>"+msg[i].lable+"</option>");
+				}
+
+			},error:function(){
+				alert("获取数据失败","error");
+			}
+		});
+	}
+	$(document).on("change","#type",function(){
+		var value = obj.options[obj.selectedIndex].value
+		var textValue = obj.options[obj.selectedIndex].text
+		$(".lable").find("option[text= textValue]").attr("selected",true);
+	});
+
+</script>
+
+<!--获取职位分类信息-->
+<script>
+	function getJobCategory(){
+		$("select[name='category']").empty();
+		$.ajax({
+			type : "POST",
+			url :  window.location.protocol + '//' + window.location.host   + "/job/jobPosition/getJobCategoryList",
+			dataType : "JSON",
+			data : {},
+			success : function(msg) {
+				//debugger;
+				$("select[name='category']").prepend("<option value=''>--请选择职位分类--</option>");//添加第一个option值
+				for (var i = 0; i < msg.length; i++) {
+					//如果在select中传递其他参数，可以在option 的value属性中添加参数
+					$("select[name='category']").append("<option value='"+msg[i].id+"'>"+msg[i].jobCategory+"</option>");
+				}
+
+			},error:function(){
+				alert("获取数据失败","error");
+			}
+		});
+	}
+	$(document).on("change","#type",function(){
+		var value = obj.options[obj.selectedIndex].value
+		var textValue = obj.options[obj.selectedIndex].text
+		$(".category").find("option[text= textValue]").attr("selected",true);
+	});
+
+</script>
+
+
+<script type="text/javascript">
+	$(function(){
+		<!-- datetimepicker示例 -->
+		$("#datetimepicker-demo-1").datetimepicker();
+
+		$("#datetimepicker-demo-2").datetimepicker({
+			format: "yyyy-mm-dd",
+			minView: "month",
+			autoclose: true
+		});
+
+		$("#datetimepicker-demo-3").datetimepicker({
+			format: "yyyy-mm-dd hh:ii:ss",
+			autoclose: true
+		});
+
+		$('.form_date').datetimepicker({
+			format: "yyyy-mm-dd",
+			minView: "month",
+			autoclose: true
+		});
+
+		$("#datetimepicker-startTime").datetimepicker({
+			format: 'yyyy-mm-dd',
+			minView: "month",
+			todayBtn:  true,
+			autoclose: true,
+			endDate : new Date(),
+		}).on('changeDate', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var startTime = event.date;
+			$('#datetimepicker-endTime').datetimepicker('setStartDate', startTime);
+		});
+
+		$("#datetimepicker-endTime").datetimepicker({
+			format: 'yyyy-mm-dd',
+			minView: "month",
+			todayBtn:  true,
+			autoclose: true,
+			endDate : new Date(),
+		}).on('changeDate', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var endTime = event.date;
+			$("#datetimepicker-startTime").datetimepicker('setEndDate', endTime);
+		});
+
+		<!-- laydate示例 -->
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+
+			laydate.render({
+				elem: '#laydate-demo-1'
+			});
+
+			laydate.render({
+				elem: '#laydate-demo-2',
+				type: 'date'
+			});
+
+			laydate.render({
+				elem: '#laydate-demo-3',
+				type: 'datetime',
+				trigger: 'click'
+			});
+
+			laydate.render({
+				elem: '#laydate-demo-4',
+				range: true
+			});
+
+			var startDate = laydate.render({
+				elem: '#laydate-startTime',
+				max: $('#laydate-endTime').val(),
+				theme: 'molv',
+				trigger: 'click',
+				done: function(value, date) {
+					// 结束时间大于开始时间
+					if (value !== '') {
+						endDate.config.min.year = date.year;
+						endDate.config.min.month = date.month - 1;
+						endDate.config.min.date = date.date;
+					} else {
+						endDate.config.min.year = '';
+						endDate.config.min.month = '';
+						endDate.config.min.date = '';
+					}
+				}
+			});
+
+			var endDate = laydate.render({
+				elem: '#laydate-endTime',
+				min: $('#laydate-startTime').val(),
+				theme: 'molv',
+				trigger: 'click',
+				done: function(value, date) {
+					// 开始时间小于结束时间
+					if (value !== '') {
+						startDate.config.max.year = date.year;
+						startDate.config.max.month = date.month - 1;
+						startDate.config.max.date = date.date;
+					} else {
+						startDate.config.max.year = '';
+						startDate.config.max.month = '';
+						startDate.config.max.date = '';
+					}
+				}
+			});
+		});
+	});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('用户报名信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+
+							<li>
+								状态：
+                                <select name="status" th:with="type=${@dict.getType('apply_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <!--<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:tUserPosition:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:tUserPosition:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:tUserPosition:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:tUserPosition:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>-->
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('uerPosition:tUserPosition:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('uerPosition:tUserPosition:remove')}]];
+        var prefix = ctx + "uerPosition/tUserPosition";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "用户报名信息",
+		        showExport: true,
+                columns: [
+				{
+					field : 'id', 
+					title : '',
+					visible: false
+				},
+				/*{
+					field : 'userId', 
+					title : '用户ID',
+					sortable: true
+				},*/
+
+				{
+					field : 'title',
+					title : '职位名称',
+					sortable: true
+				},
+				{
+					field : 'name',
+					title : '应聘人',
+					sortable: true
+				},
+				{
+					field : 'company',
+					title : '公司名称',
+					sortable: true
+				},
+				/*{
+					field : 'positId', 
+					title : '职位ID',
+					sortable: true
+				},*/
+				{
+					field : 'status', 
+					title : '状态（已报名-->被查看-->待面试-->已录取-->已拒绝）',
+                    formatter: function (value, row, index) {
+                        if (row.status == 0) {
+                            return "已报名"
+                        } else if (row.status == 1) {
+                            return "被查看"
+                        }else if (row.status == 2) {
+                            return "待面试"
+                        }else if (row.status == 3) {
+                            return "已录取"
+                        }else if (row.status == 4) {
+                            return "已拒绝"
+                        }
+                    }
+
+				},
+				/*{
+					field : 'createTime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'updateTime', 
+					title : '修改时间',
+					sortable: true
+				},*/
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+
+		            	if(row.status == 0){
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="checkDetail(\'' + row.id + '\')" ><i class="fa"></i>查看</a> ');
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="reject(\'' + row.id + '\')" ><i class="fa"></i>拒绝</a> ');
+                        }
+
+                        if(row.status == 1){
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="toFace(\'' + row.id + '\')" ><i class="fa"></i>待面试</a> ');
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="reject(\'' + row.id + '\')" ><i class="fa"></i>拒绝</a> ');
+                        }
+
+                        if(row.status == 2){
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="offer(\'' + row.id + '\')" ><i class="fa"></i>录取</a> ');
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="reject(\'' + row.id + '\')" ><i class="fa"></i>拒绝</a> ');
+		            	}
+
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+
+<script>
+    /* 设置查看 */
+    function checkDetail(id) {
+        $.modal.confirm("确认设置为查看状态吗？", function() {
+            $.operate.post(prefix + "/edit", { "id": id, "status": 1 });
+        })
+    }
+
+    /* 设置为待面试 */
+    function toFace(id) {
+        $.modal.confirm("确认设置为待面试吗？", function() {
+            $.operate.post(prefix + "/edit", { "id": id, "status": 2 });
+        })
+    }
+
+    /* 设置为已录取 */
+    function offer(id) {
+        $.modal.confirm("确认设置为已录取吗？", function() {
+            $.operate.post(prefix + "/edit", { "id": id, "status": 3 });
+        })
+    }
+
+    /* 设置为拒绝 */
+    function reject(id) {
+        $.modal.confirm("确认设置为拒绝吗？", function() {
+            $.operate.post(prefix + "/edit", { "id": id, "status": 4 });
+        })
+    }
+
+</script>
+</body>
+</html>

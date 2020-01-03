@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.article.mapper.TArticleMapper">
+    
+    <resultMap type="com.ruoyi.project.system.article.domain.TArticle" id="TArticleResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="url"    column="url"    />
+        <result property="content"    column="content"    />
+        <result property="status"    column="status"    />
+        <result property="label"    column="label"    />
+        <result property="readTimes"    column="readTimes"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="imgUrl"    column="imgUrl"    />
+    </resultMap>
+	
+	<sql id="selectTArticleVo">
+        select id, title, url, content, status, label, readTimes, createTime, imgUrl from t_article
+    </sql>
+	
+    <select id="selectTArticleList" parameterType="com.ruoyi.project.system.article.domain.TArticle" resultMap="TArticleResult">
+        <include refid="selectTArticleVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="title != null  and title != '' "> and title = #{title}</if>
+             <if test="url != null  and url != '' "> and url = #{url}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="status != null "> and status = #{status}</if>
+             <if test="label != null  and label != '' "> and label = #{label}</if>
+             <if test="readTimes != null "> and readTimes = #{readTimes}</if>
+             <if test="createTime != null "> and createTime = #{createTime}</if>
+             <if test="imgUrl != null  and imgUrl != '' "> and imgUrl = #{imgUrl}</if>
+         </where>
+        ORDER  BY  createTime DESC
+    </select>
+    
+    <select id="selectTArticleById" parameterType="Long" resultMap="TArticleResult">
+        <include refid="selectTArticleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTArticle" parameterType="com.ruoyi.project.system.article.domain.TArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into t_article
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="title != null  and title != ''  ">title,</if>
+			<if test="url != null  and url != ''  ">url,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="status != null  ">status,</if>
+			<if test="label != null  and label != ''  ">label,</if>
+			<if test="readTimes != null  ">readTimes,</if>
+			<if test="createTime != null  ">createTime,</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">imgUrl,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="title != null  and title != ''  ">#{title},</if>
+			<if test="url != null  and url != ''  ">#{url},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="status != null  ">#{status},</if>
+			<if test="label != null  and label != ''  ">#{label},</if>
+			<if test="readTimes != null  ">#{readTimes},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">#{imgUrl},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTArticle" parameterType="com.ruoyi.project.system.article.domain.TArticle">
+        update t_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''  ">title = #{title},</if>
+            <if test="url != null  and url != ''  ">url = #{url},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="label != null  and label != ''  ">label = #{label},</if>
+            <if test="readTimes != null  ">readTimes = #{readTimes},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="imgUrl != null  and imgUrl != ''  ">imgUrl = #{imgUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTArticleById" parameterType="Long">
+        delete from t_article where id = #{id}
+    </delete>
+	
+    <delete id="deleteTArticleByIds" parameterType="String">
+        delete from t_article where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.userPosition.mapper.TUserPositionMapper">
+
+    <resultMap type="com.ruoyi.project.system.userPosition.domain.TUserPosition" id="TUserPositionResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="userId"    />
+        <result property="positId"    column="positId"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="name"    column="name"    />
+        <result property="title"    column="title"    />
+        <result property="company"    column="company"    />
+    </resultMap>
+	
+	<sql id="selectTUserPositionVo">
+        SELECT u.`name`,j.title,c.company,p.id,p.userId,p.positId,p.`status`,p.createTime,
+        p.updateTime FROM t_user_position p LEFT JOIN t_user u ON p.userId=u.id
+        LEFT JOIN job_position j ON p.positId=j.id LEFT JOIN t_company c ON c.id= j.companyId
+    </sql>
+	
+    <select id="selectTUserPositionList" parameterType="com.ruoyi.project.system.userPosition.domain.TUserPosition" resultMap="TUserPositionResult">
+        <include refid="selectTUserPositionVo"/>
+        <where>  
+            <if test="id != null "> and p.id = #{id}</if>
+             <if test="userId != null "> and p.userId = #{userId}</if>
+             <if test="positId != null "> and p.positId = #{positId}</if>
+             <if test="status != null "> and p.status = #{status}</if>
+             <if test="createTime != null "> and p.createTime = #{createTime}</if>
+             <if test="updateTime != null "> and p.updateTime = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserPositionById" parameterType="Long" resultMap="TUserPositionResult">
+        <include refid="selectTUserPositionVo"/>
+        where p.id = #{id}
+    </select>
+        
+    <insert id="insertTUserPosition" parameterType="com.ruoyi.project.system.userPosition.domain.TUserPosition" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user_position
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">userId,</if>
+			<if test="positId != null  ">positId,</if>
+			<if test="status != null  ">status,</if>
+			<if test="createTime != null  ">createTime,</if>
+			<if test="updateTime != null  ">updateTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">#{userId},</if>
+			<if test="positId != null  ">#{positId},</if>
+			<if test="status != null  ">#{status},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserPosition" parameterType="com.ruoyi.project.system.userPosition.domain.TUserPosition">
+        update t_user_position
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null  ">userId = #{userId},</if>
+            <if test="positId != null  ">positId = #{positId},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="updateTime != null  ">updateTime = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserPositionById" parameterType="Long">
+        delete from t_user_position where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserPositionByIds" parameterType="String">
+        delete from t_user_position where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

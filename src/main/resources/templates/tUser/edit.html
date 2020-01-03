@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改彩种分类')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-tUser-edit" th:object="${tUser}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">手机号：</label>
+				<div class="col-sm-8">
+					<input id="mobile" name="mobile" th:field="*{mobile}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">密码：</label>
+				<div class="col-sm-8">
+					<input id="password" name="password" th:field="*{password}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">头像地址：</label>
+				<div class="col-sm-8">
+					<input id="faceUrl" name="faceUrl" th:field="*{faceUrl}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">账户余额：</label>
+				<div class="col-sm-8">
+					<input id="balance" name="balance" th:field="*{balance}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">姓名：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" th:field="*{name}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">性别：</label>
+				<div class="col-sm-8">
+					<input id="sex" name="sex" th:field="*{sex}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">学历：</label>
+				<div class="col-sm-8">
+					<input id="education" name="education" th:field="*{education}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">出生年份：</label>
+				<div class="col-sm-8">
+					<input id="birthyear" name="birthyear" th:field="*{birthyear}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">出生年月日：</label>
+				<div class="col-sm-8">
+					<input id="birthday" name="birthday" th:field="*{birthday}" class="form-control" type="text"  readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">身份：</label>
+				<div class="col-sm-8">
+					<input id="identity" name="identity" th:field="*{identity}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">身高：</label>
+				<div class="col-sm-8">
+					<input id="height" name="height" th:field="*{height}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">体重：</label>
+				<div class="col-sm-8">
+					<input id="weight" name="weight" th:field="*{weight}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">居住地点：</label>
+				<div class="col-sm-8">
+					<input id="address" name="address" th:field="*{address}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微信：</label>
+				<div class="col-sm-8">
+					<input id="wechat" name="wechat" th:field="*{wechat}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">QQ：</label>
+				<div class="col-sm-8">
+					<input id="qq" name="qq" th:field="*{qq}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">邮箱：</label>
+				<div class="col-sm-8">
+					<input id="mail" name="mail" th:field="*{mail}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">自我介绍：</label>
+				<div class="col-sm-8">
+					<input id="descrption" name="descrption" th:field="*{descrption}" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">个人照片：</label>
+				<div class="col-sm-8">
+					<input id="photo" name="photo" th:field="*{photo}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">真实姓名：</label>
+				<div class="col-sm-8">
+					<input id="relaName" name="relaName" th:field="*{relaName}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">身份证号：</label>
+				<div class="col-sm-8">
+					<input id="idCard" name="idCard" th:field="*{idCard}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">简历完成进度：</label>
+				<div class="col-sm-8">
+					<input id="schedule" name="schedule" th:field="*{schedule}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createTime" name="createTime" th:field="*{createTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="updateTime" name="updateTime" th:field="*{updateTime}" class="form-control" type="text">
+				</div>
+			</div>-->
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "user/tUser";
+		$("#form-tUser-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-tUser-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

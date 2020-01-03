@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.version.mapper.TVersionMapper">
+    
+    <resultMap type="com.ruoyi.project.system.version.domain.TVersion" id="TVersionResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="newVersion"    column="newVersion"    />
+        <result property="lastVersion"    column="lastVersion"    />
+        <result property="content"    column="content"    />
+        <result property="url"    column="url"    />
+    </resultMap>
+	
+	<sql id="selectTVersionVo">
+        select id, type, newVersion, lastVersion, content, url from t_version
+    </sql>
+	
+    <select id="selectTVersionList" parameterType="com.ruoyi.project.system.version.domain.TVersion" resultMap="TVersionResult">
+        <include refid="selectTVersionVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="type != null "> and type = #{type}</if>
+             <if test="newVersion != null  and newVersion != '' "> and newVersion = #{newVersion}</if>
+             <if test="lastVersion != null  and lastVersion != '' "> and lastVersion = #{lastVersion}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="url != null  and url != '' "> and url = #{url}</if>
+         </where>
+    </select>
+    
+    <select id="selectTVersionById" parameterType="Long" resultMap="TVersionResult">
+        <include refid="selectTVersionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTVersion" parameterType="com.ruoyi.project.system.version.domain.TVersion" useGeneratedKeys="true" keyProperty="id">
+        insert into t_version
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null  ">type,</if>
+			<if test="newVersion != null  and newVersion != ''  ">newVersion,</if>
+			<if test="lastVersion != null  and lastVersion != ''  ">lastVersion,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="url != null  and url != ''  ">url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="type != null  ">#{type},</if>
+			<if test="newVersion != null  and newVersion != ''  ">#{newVersion},</if>
+			<if test="lastVersion != null  and lastVersion != ''  ">#{lastVersion},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="url != null  and url != ''  ">#{url},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTVersion" parameterType="com.ruoyi.project.system.version.domain.TVersion">
+        update t_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null  ">type = #{type},</if>
+            <if test="newVersion != null  and newVersion != ''  ">newVersion = #{newVersion},</if>
+            <if test="lastVersion != null  and lastVersion != ''  ">lastVersion = #{lastVersion},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="url != null  and url != ''  ">url = #{url},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTVersionById" parameterType="Long">
+        delete from t_version where id = #{id}
+    </delete>
+	
+    <delete id="deleteTVersionByIds" parameterType="String">
+        delete from t_version where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

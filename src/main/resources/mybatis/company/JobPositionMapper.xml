@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.company.mapper.JobPositionMapper">
+    
+    <resultMap type="com.ruoyi.project.system.company.domain.JobPosition" id="JobPositionResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="companyId"    />
+        <result property="sourceId"    column="sourceId"    />
+        <result property="kfId"    column="kfId"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="cleanType"    column="cleanType"    />
+        <result property="needPeople"    column="needPeople"    />
+        <result property="hasPeople"    column="hasPeople"    />
+        <result property="reportPeople"    column="reportPeople"    />
+        <result property="money"    column="money"    />
+        <result property="jobRequired"    column="jobRequired"    />
+        <result property="taskType"    column="taskType"    />
+        <result property="workflow"    column="workflow"    />
+        <result property="jobDetail"    column="jobDetail"    />
+        <result property="address"    column="address"    />
+        <result property="location"    column="location"    />
+        <result property="lable"    column="lable"    />
+        <result property="category"    column="category"    />
+        <result property="publishTime"    column="publishTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="locationName"    column="locationName"    />
+        <result property="lableName"    column="lableName"    />
+        <result property="jobCategory"    column="jobCategory"    />
+        <result property="companyName"    column="companyName"    />
+        <result property="jobTitle"    column="jobTitle"    />
+        <result property="isHot"    column="isHot"    />
+    </resultMap>
+	
+	<sql id="selectJobPositionVo">
+         SELECT
+           c.city AS locationName,co.lable AS lableName,d.`name` AS jobTitle, category.jobCategory,t.company AS companyName, t.authentication AS authentication,
+           job.id, job.companyId, job.kfId, job.title,job.type,job.cleanType,job.needPeople,job.hasPeople,job.reportPeople,
+           job.money, job.jobRequired, job.taskType, job.workflow, job.jobDetail, job.address, job.location,job.lable,
+           job.category, job.publishTime, job.createTime,job.updateTime,job.updateTime,job.isHot,job.sourceId
+           FROM
+           job_position job
+           LEFT OUTER JOIN city c ON job.location = c.cid
+           LEFT JOIN t_company t ON t.id= job.companyId
+		   LEFT JOIN config_job_label co ON co.id=job.lable
+           LEFT JOIN config_job_category category ON category.id=job.category
+	       LEFT JOIN job_title_detail d ON d.id = job.taskType
+    </sql>
+	
+    <select id="selectJobPositionList" parameterType="com.ruoyi.project.system.company.domain.JobPosition" resultMap="JobPositionResult">
+        <include refid="selectJobPositionVo"/>
+        <where>  
+            <if test="id != null "> and job.id = #{id}</if>
+             <if test="companyId != null "> and job.companyId = #{companyId}</if>
+             <if test="kfId != null "> and job.kfId = #{kfId}</if>
+             <if test="title != null  and title != '' "> and job.title like concat('%', #{title}, '%')</if>
+             <if test="type != null  and type != '' "> and job.type = #{type}</if>
+             <if test="cleanType != null  and cleanType != '' "> and job.cleanType = #{cleanType}</if>
+             <if test="needPeople != null "> and job.needPeople = #{needPeople}</if>
+             <if test="hasPeople != null "> and job.hasPeople = #{hasPeople}</if>
+             <if test="reportPeople != null "> and job.reportPeople = #{reportPeople}</if>
+             <if test="money != null  and money != '' "> and job.money = #{money}</if>
+             <if test="jobRequired != null  and jobRequired != '' "> and job.jobRequired = #{jobRequired}</if>
+             <if test="taskType != null "> and job.taskType = #{taskType}</if>
+             <if test="workflow != null  and workflow != '' "> and job.workflow = #{workflow}</if>
+             <if test="jobDetail != null  and jobDetail != '' "> and job.jobDetail = #{jobDetail}</if>
+             <if test="address != null  and address != '' "> and job.address = #{address}</if>
+             <if test="location != null "> and job.location = #{location}</if>
+             <if test="lable != null "> and job.lable = #{lable}</if>
+             <if test="category != null "> and job.category = #{category}</if>
+             <if test="publishTime != null "> and job.publishTime = #{publishTime}</if>
+             <if test="createTime != null "> and job.createTime = #{createTime}</if>
+             <if test="updateTime != null "> and job.updateTime = #{updateTime}</if>
+            <if test="isHot != null "> and job.isHot = #{isHot}</if>
+            <if test="sourceId != null "> and job.sourceId = #{sourceId}</if>
+         </where>
+    </select>
+    
+    <select id="selectJobPositionById" parameterType="Long" resultMap="JobPositionResult">
+        <include refid="selectJobPositionVo"/>
+        where job.id = #{id}
+    </select>
+        
+    <insert id="insertJobPosition" parameterType="com.ruoyi.project.system.company.domain.JobPosition" useGeneratedKeys="true" keyProperty="id">
+        insert into job_position
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="companyId != null  ">companyId,</if>
+			<if test="kfId != null  ">kfId,</if>
+			<if test="title != null  and title != ''  ">title,</if>
+			<if test="type != null  and type != ''  ">type,</if>
+			<if test="cleanType != null  and cleanType != ''  ">cleanType,</if>
+			<if test="needPeople != null  ">needPeople,</if>
+			<if test="hasPeople != null  ">hasPeople,</if>
+			<if test="reportPeople != null  ">reportPeople,</if>
+			<if test="money != null  and money != ''  ">money,</if>
+			<if test="jobRequired != null  and jobRequired != ''  ">jobRequired,</if>
+			<if test="taskType != null  ">taskType,</if>
+			<if test="workflow != null  and workflow != ''  ">workflow,</if>
+			<if test="jobDetail != null  and jobDetail != ''  ">jobDetail,</if>
+			<if test="address != null  and address != ''  ">address,</if>
+			<if test="location != null  ">location,</if>
+			<if test="lable != null  ">lable,</if>
+			<if test="category != null  ">category,</if>
+			<if test="publishTime != null  ">publishTime,</if>
+			<if test="createTime != null  ">createTime,</if>
+			<if test="updateTime != null  ">updateTime,</if>
+            <if test="provinceId != null  ">provinceId,</if>
+            <if test="sourceId != null  ">sourceId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="companyId != null  ">#{companyId},</if>
+			<if test="kfId != null  ">#{kfId},</if>
+			<if test="title != null  and title != ''  ">#{title},</if>
+			<if test="type != null  and type != ''  ">#{type},</if>
+			<if test="cleanType != null  and cleanType != ''  ">#{cleanType},</if>
+			<if test="needPeople != null  ">#{needPeople},</if>
+			<if test="hasPeople != null  ">#{hasPeople},</if>
+			<if test="reportPeople != null  ">#{reportPeople},</if>
+			<if test="money != null  and money != ''  ">#{money},</if>
+			<if test="jobRequired != null  and jobRequired != ''  ">#{jobRequired},</if>
+			<if test="taskType != null  ">#{taskType},</if>
+			<if test="workflow != null  and workflow != ''  ">#{workflow},</if>
+			<if test="jobDetail != null  and jobDetail != ''  ">#{jobDetail},</if>
+			<if test="address != null  and address != ''  ">#{address},</if>
+			<if test="location != null  ">#{location},</if>
+			<if test="lable != null  ">#{lable},</if>
+			<if test="category != null  ">#{category},</if>
+			<if test="publishTime != null  ">#{publishTime},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+            <if test="provinceId != null  ">#{provinceId},</if>
+            <if test="sourceId != null  ">#{sourceId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateJobPosition" parameterType="com.ruoyi.project.system.company.domain.JobPosition">
+        update job_position
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null  ">companyId = #{companyId},</if>
+            <if test="kfId != null  ">kfId = #{kfId},</if>
+            <if test="title != null  and title != ''  ">title = #{title},</if>
+            <if test="type != null  and type != ''  ">type = #{type},</if>
+            <if test="cleanType != null  and cleanType != ''  ">cleanType = #{cleanType},</if>
+            <if test="needPeople != null  ">needPeople = #{needPeople},</if>
+            <if test="hasPeople != null  ">hasPeople = #{hasPeople},</if>
+            <if test="reportPeople != null  ">reportPeople = #{reportPeople},</if>
+            <if test="money != null  and money != ''  ">money = #{money},</if>
+            <if test="jobRequired != null  and jobRequired != ''  ">jobRequired = #{jobRequired},</if>
+            <if test="taskType != null  ">taskType = #{taskType},</if>
+            <if test="workflow != null  and workflow != ''  ">workflow = #{workflow},</if>
+            <if test="jobDetail != null  and jobDetail != ''  ">jobDetail = #{jobDetail},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="location != null  ">location = #{location},</if>
+            <if test="lable != null  ">lable = #{lable},</if>
+            <if test="category != null  ">category = #{category},</if>
+            <if test="publishTime != null  ">publishTime = #{publishTime},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="updateTime != null  ">updateTime = #{updateTime},</if>
+            <if test="isHot != null  ">isHot = #{isHot},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteJobPositionById" parameterType="Long">
+        delete from job_position where id = #{id}
+    </delete>
+	
+    <delete id="deleteJobPositionByIds" parameterType="String">
+        delete from job_position where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

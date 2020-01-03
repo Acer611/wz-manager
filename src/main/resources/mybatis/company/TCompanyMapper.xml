@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.company.mapper.TCompanyMapper">
+
+    <resultMap type="com.ruoyi.project.system.company.domain.TCompany" id="TCompanyResult">
+        <result property="id" column="id"/>
+        <result property="company" column="company"/>
+        <result property="description" column="description"/>
+        <result property="authentication" column="authentication"/>
+        <result property="domain" column="domain"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="registeredCapital" column="registeredCapital"/>
+        <result property="registerDate" column="registerDate"/>
+        <result property="address" column="address"/>
+        <result property="registrationAuthority" column="registrationAuthority"/>
+        <result property="creditCode" column="creditCode"/>
+        <result property="groupCode" column="groupCode"/>
+        <result property="businessScop" column="businessScop"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="updateTime"/>
+        <result property="city" column="city"/>
+        <result property="companyId" column="companyId"/>
+    </resultMap>
+
+    <sql id="selectTCompanyVo">
+      SELECT  t.city, c.id,c.company,c.description,c.authentication,c.domain,c.type,c.`status`,
+	          c.registeredCapital,c.registerDate,c.address,c.registrationAuthority,c.creditCode,
+	          c.groupCode,c.businessScop,c.createTime,c.updateTime,c.companyId
+      FROM
+	      t_company c LEFT JOIN city t ON c.domain = t.cid
+    </sql>
+
+    <select id="selectTCompanyList" parameterType="com.ruoyi.project.system.company.domain.TCompany"
+            resultMap="TCompanyResult">
+        <include refid="selectTCompanyVo"/>
+        <where>
+            <if test="id != null ">and id = #{id}</if>
+            <if test="company != null  and company != '' ">and company like concat('%', #{company}, '%') </if>
+            <if test="description != null  and description != '' ">and description = #{description}</if>
+            <if test="authentication != null ">and authentication = #{authentication}</if>
+            <if test="domain != null ">and domain = #{domain}</if>
+            <if test="type != null  and type != '' ">and type = #{type}</if>
+            <if test="status != null  and status != '' ">and status = #{status}</if>
+            <if test="registeredCapital != null  and registeredCapital != '' ">and registeredCapital =
+                #{registeredCapital}
+            </if>
+            <if test="registerDate != null ">and registerDate = #{registerDate}</if>
+            <if test="address != null  and address != '' ">and address = #{address}</if>
+            <if test="registrationAuthority != null  and registrationAuthority != '' ">and registrationAuthority =
+                #{registrationAuthority}
+            </if>
+            <if test="creditCode != null  and creditCode != '' ">and creditCode = #{creditCode}</if>
+            <if test="groupCode != null  and groupCode != '' ">and groupCode = #{groupCode}</if>
+            <if test="businessScop != null  and businessScop != '' ">and businessScop = #{businessScop}</if>
+            <if test="createTime != null ">and createTime = #{createTime}</if>
+            <if test="updateTime != null ">and updateTime = #{updateTime}</if>
+        </where>
+        ORDER  BY  createTime DESC
+    </select>
+
+    <select id="selectTCompanyById" parameterType="Long" resultMap="TCompanyResult">
+        <include refid="selectTCompanyVo"/>
+        where  c.id = #{id}
+    </select>
+
+    <insert id="insertTCompany" parameterType="com.ruoyi.project.system.company.domain.TCompany" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="company != null  and company != ''  ">company,</if>
+            <if test="description != null  and description != ''  ">description,</if>
+            <if test="authentication != null  ">authentication,</if>
+            <if test="domain != null  ">domain,</if>
+            <if test="type != null  and type != ''  ">type,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="registeredCapital != null  and registeredCapital != ''  ">registeredCapital,</if>
+            <if test="registerDate != null  ">registerDate,</if>
+            <if test="address != null  and address != ''  ">address,</if>
+            <if test="registrationAuthority != null  and registrationAuthority != ''  ">registrationAuthority,</if>
+            <if test="creditCode != null  and creditCode != ''  ">creditCode,</if>
+            <if test="groupCode != null  and groupCode != ''  ">groupCode,</if>
+            <if test="businessScop != null  and businessScop != ''  ">businessScop,</if>
+            <if test="createTime != null  ">createTime,</if>
+            <if test="updateTime != null  ">updateTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="company != null  and company != ''  ">#{company},</if>
+            <if test="description != null  and description != ''  ">#{description},</if>
+            <if test="authentication != null  ">#{authentication},</if>
+            <if test="domain != null  ">#{domain},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="registeredCapital != null  and registeredCapital != ''  ">#{registeredCapital},</if>
+            <if test="registerDate != null  ">#{registerDate},</if>
+            <if test="address != null  and address != ''  ">#{address},</if>
+            <if test="registrationAuthority != null  and registrationAuthority != ''  ">#{registrationAuthority},</if>
+            <if test="creditCode != null  and creditCode != ''  ">#{creditCode},</if>
+            <if test="groupCode != null  and groupCode != ''  ">#{groupCode},</if>
+            <if test="businessScop != null  and businessScop != ''  ">#{businessScop},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCompany" parameterType="com.ruoyi.project.system.company.domain.TCompany">
+        update t_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="company != null  and company != ''  ">company = #{company},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="authentication != null  ">authentication = #{authentication},</if>
+            <if test="domain != null  ">domain = #{domain},</if>
+            <if test="type != null  and type != ''  ">type = #{type},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="registeredCapital != null  and registeredCapital != ''  ">registeredCapital =
+                #{registeredCapital},
+            </if>
+            <if test="registerDate != null  ">registerDate = #{registerDate},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="registrationAuthority != null  and registrationAuthority != ''  ">registrationAuthority =
+                #{registrationAuthority},
+            </if>
+            <if test="creditCode != null  and creditCode != ''  ">creditCode = #{creditCode},</if>
+            <if test="groupCode != null  and groupCode != ''  ">groupCode = #{groupCode},</if>
+            <if test="businessScop != null  and businessScop != ''  ">businessScop = #{businessScop},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="updateTime != null  ">updateTime = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCompanyById" parameterType="Long">
+        delete from t_company where id = #{id}
+    </delete>
+
+    <delete id="deleteTCompanyByIds" parameterType="String">
+        delete from t_company where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

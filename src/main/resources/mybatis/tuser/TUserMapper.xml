@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.tuser.mapper.TUserMapper">
+    
+    <resultMap type="com.ruoyi.project.system.tuser.domain.TUser" id="TUserResult">
+        <result property="id"    column="id"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="password"    column="password"    />
+        <result property="faceUrl"    column="faceUrl"    />
+        <result property="balance"    column="balance"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="education"    column="education"    />
+        <result property="birthyear"    column="birthyear"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="identity"    column="identity"    />
+        <result property="height"    column="height"    />
+        <result property="weight"    column="weight"    />
+        <result property="address"    column="address"    />
+        <result property="wechat"    column="wechat"    />
+        <result property="qq"    column="qq"    />
+        <result property="mail"    column="mail"    />
+        <result property="descrption"    column="descrption"    />
+        <result property="photo"    column="photo"    />
+        <result property="relaName"    column="relaName"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="schedule"    column="schedule"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateTime"    column="updateTime"    />
+    </resultMap>
+	
+	<sql id="selectTUserVo">
+        select id, mobile, password, faceUrl, balance, name, sex, education, birthyear, birthday, identity,
+        height, weight, address, wechat, qq, mail, descrption, photo, relaName, id_card, schedule, createTime, updateTime from t_user
+    </sql>
+	
+    <select id="selectTUserList" parameterType="com.ruoyi.project.system.tuser.domain.TUser" resultMap="TUserResult">
+        <include refid="selectTUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="mobile != null  and mobile != '' "> and mobile = #{mobile}</if>
+             <if test="password != null  and password != '' "> and password = #{password}</if>
+             <if test="faceUrl != null  and faceUrl != '' "> and faceUrl = #{faceUrl}</if>
+             <if test="balance != null "> and balance = #{balance}</if>
+             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="sex != null "> and sex = #{sex}</if>
+             <if test="education != null  and education != '' "> and education = #{education}</if>
+             <if test="birthyear != null  and birthyear != '' "> and birthyear = #{birthyear}</if>
+             <if test="birthday != null  and birthday != '' "> and birthday = #{birthday}</if>
+             <if test="identity != null "> and identity = #{identity}</if>
+             <if test="height != null "> and height = #{height}</if>
+             <if test="weight != null "> and weight = #{weight}</if>
+             <if test="address != null  and address != '' "> and address = #{address}</if>
+             <if test="wechat != null  and wechat != '' "> and wechat = #{wechat}</if>
+             <if test="qq != null  and qq != '' "> and qq = #{qq}</if>
+             <if test="mail != null  and mail != '' "> and mail = #{mail}</if>
+             <if test="descrption != null  and descrption != '' "> and descrption = #{descrption}</if>
+             <if test="photo != null  and photo != '' "> and photo = #{photo}</if>
+             <if test="relaName != null  and relaName != '' "> and relaName = #{relaName}</if>
+             <if test="idCard != null  and idCard != '' "> and id_card = #{idCard}</if>
+             <if test="schedule != null  and schedule != '' "> and schedule = #{schedule}</if>
+             <if test="createTime != null "> and createTime = #{createTime}</if>
+             <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserById" parameterType="Long" resultMap="TUserResult">
+        <include refid="selectTUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTUser" parameterType="com.ruoyi.project.system.tuser.domain.TUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mobile != null  and mobile != ''  ">mobile,</if>
+			<if test="password != null  and password != ''  ">password,</if>
+			<if test="faceUrl != null  and faceUrl != ''  ">faceUrl,</if>
+			<if test="balance != null  ">balance,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="sex != null  ">sex,</if>
+			<if test="education != null  and education != ''  ">education,</if>
+			<if test="birthyear != null  and birthyear != ''  ">birthyear,</if>
+			<if test="birthday != null  and birthday != ''  ">birthday,</if>
+			<if test="identity != null  ">identity,</if>
+			<if test="height != null  ">height,</if>
+			<if test="weight != null  ">weight,</if>
+			<if test="address != null  and address != ''  ">address,</if>
+			<if test="wechat != null  and wechat != ''  ">wechat,</if>
+			<if test="qq != null  and qq != ''  ">qq,</if>
+			<if test="mail != null  and mail != ''  ">mail,</if>
+			<if test="descrption != null  and descrption != ''  ">descrption,</if>
+			<if test="photo != null  and photo != ''  ">photo,</if>
+			<if test="relaName != null  and relaName != ''  ">relaName,</if>
+			<if test="idCard != null  and idCard != ''  ">id_card,</if>
+			<if test="schedule != null  and schedule != ''  ">schedule,</if>
+			<if test="createTime != null  ">createTime,</if>
+			<if test="updateTime != null  ">updateTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mobile != null  and mobile != ''  ">#{mobile},</if>
+			<if test="password != null  and password != ''  ">#{password},</if>
+			<if test="faceUrl != null  and faceUrl != ''  ">#{faceUrl},</if>
+			<if test="balance != null  ">#{balance},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="sex != null  ">#{sex},</if>
+			<if test="education != null  and education != ''  ">#{education},</if>
+			<if test="birthyear != null  and birthyear != ''  ">#{birthyear},</if>
+			<if test="birthday != null  and birthday != ''  ">#{birthday},</if>
+			<if test="identity != null  ">#{identity},</if>
+			<if test="height != null  ">#{height},</if>
+			<if test="weight != null  ">#{weight},</if>
+			<if test="address != null  and address != ''  ">#{address},</if>
+			<if test="wechat != null  and wechat != ''  ">#{wechat},</if>
+			<if test="qq != null  and qq != ''  ">#{qq},</if>
+			<if test="mail != null  and mail != ''  ">#{mail},</if>
+			<if test="descrption != null  and descrption != ''  ">#{descrption},</if>
+			<if test="photo != null  and photo != ''  ">#{photo},</if>
+			<if test="relaName != null  and relaName != ''  ">#{relaName},</if>
+			<if test="idCard != null  and idCard != ''  ">#{idCard},</if>
+			<if test="schedule != null  and schedule != ''  ">#{schedule},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUser" parameterType="com.ruoyi.project.system.tuser.domain.TUser">
+        update t_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mobile != null  and mobile != ''  ">mobile = #{mobile},</if>
+            <if test="password != null  and password != ''  ">password = #{password},</if>
+            <if test="faceUrl != null  and faceUrl != ''  ">faceUrl = #{faceUrl},</if>
+            <if test="balance != null  ">balance = #{balance},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="sex != null  ">sex = #{sex},</if>
+            <if test="education != null  and education != ''  ">education = #{education},</if>
+            <if test="birthyear != null  and birthyear != ''  ">birthyear = #{birthyear},</if>
+            <if test="birthday != null  and birthday != ''  ">birthday = #{birthday},</if>
+            <if test="identity != null  ">identity = #{identity},</if>
+            <if test="height != null  ">height = #{height},</if>
+            <if test="weight != null  ">weight = #{weight},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="wechat != null  and wechat != ''  ">wechat = #{wechat},</if>
+            <if test="qq != null  and qq != ''  ">qq = #{qq},</if>
+            <if test="mail != null  and mail != ''  ">mail = #{mail},</if>
+            <if test="descrption != null  and descrption != ''  ">descrption = #{descrption},</if>
+            <if test="photo != null  and photo != ''  ">photo = #{photo},</if>
+            <if test="relaName != null  and relaName != ''  ">relaName = #{relaName},</if>
+            <if test="idCard != null  and idCard != ''  ">id_card = #{idCard},</if>
+            <if test="schedule != null  and schedule != ''  ">schedule = #{schedule},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="updateTime != null  ">updateTime = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserById" parameterType="Long">
+        delete from t_user where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserByIds" parameterType="String">
+        delete from t_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
